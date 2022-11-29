@@ -95,7 +95,7 @@ class Cell:
         )
 
     def draw_move(self, to_cell, undo=False) -> None:
-        color = "red" if undo == False else "grey"
+        color = "#ff0000" if undo == False else "#ffdddd"
         x = (self.p2.x - self.p1.x) // 2 + self.p1.x
         y = (self.p2.y - self.p1.y) // 2 + self.p1.y
         start = Point(x, y)
@@ -225,17 +225,10 @@ class Maze:
         if len(directions) < 1:
             return False
         for direction in directions:
-            subi = i + direction[1]
-            subj = j + direction[2]
-            subc = self._cells[subi][subj]
-            p1 = Point(c.p1.x + subx, c.p1.y + suby)
-            p2 = Point(subc.p1.x + subx, subc.p1.y + suby)
-            line = Line(p1, p2)
-            line.draw(self.win.canvas, "blue")
-            if self._solve_r(subi, subj):
+            c.draw_move(self._cells[i + direction[1]][j + direction[2]])
+            if self._solve_r(i + direction[1], j + direction[2]):
                 return True
-            line.draw(self.win.canvas, "orange")
-
+            c.draw_move(self._cells[i + direction[1]][j + direction[2]], True)
 
     def _animate(self, time) -> None:
         self.win.redraw()
